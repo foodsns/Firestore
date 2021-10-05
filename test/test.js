@@ -20,4 +20,16 @@ describe("Our social app", () => {
         const testDoc = db.collection("readonly").doc("testDoc")
         await firebase.assertSucceeds(testDoc.get());
     })
+
+    it ("Can't write to items in the read-only collection", async () => {
+        const db = firebase.initializeTestApp({
+            projectId: MY_PROJECT_ID,
+        }).firestore()
+        db.settings({
+            host: "localhost:8081",
+            ssl: false
+        });
+        const testDoc = db.collection("readonly").doc("testDoc")
+        await firebase.assertFails(testDoc.set({foo: "bar"}));
+    })
 })
