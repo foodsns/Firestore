@@ -3,7 +3,8 @@ const firebase = require('@firebase/testing')
 require('dotenv').config()
 
 const MY_PROJECT_ID = 'mogutsou'
-const EMULATE_HOST = "localhost:8081"
+// eslint-disable-next-line no-undef
+const EMULATE_HOST = process.env.FIRESTORE_EMULATOR_HOST
 
 const myId = "user_abc"
 const theirId = "user_xyz"
