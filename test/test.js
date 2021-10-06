@@ -10,11 +10,18 @@ function getFirebase(auth) {
     return firebase.initializeTestApp({
         projectId: MY_PROJECT_ID,
         auth
-    }).firestore()
+    })
 }
 
-function getFirestore(auth) {
-    const db = getFirebase(auth)
+function getAdminFirebase(auth) {
+    return firebase.initializeAdminApp({
+        projectId: MY_PROJECT_ID,
+        auth
+    })
+}
+
+function getFirestore(auth, admin = false) {
+    const db = (admin ? getAdminFirebase(auth) : getFirebase(auth)).firestore()
     db.settings({
         host: "localhost:8081",
         ssl: false
@@ -64,7 +71,18 @@ describe("Our social app", () => {
     })
 
     it ("Can read a single public post", async () => {
-        const testQuery = getFirestore().collection("posts").doc("public_post")
+        const postID = "public_post"
+        const setQuery = getFirestore(null, true).collection("posts").doc(postID)
+        await setQuery.set({authorId: theirId, visibility: "public"})
+        const testQuery = getFirestore().collection("posts").doc(postID)
         await firebase.assertSucceeds(testQuery.get())
+    })
+
+    it ("Can't read a single private post", async () => {
+        const postID = "private_post"
+        const setQuery = getFirestore(null, true).collection("posts").doc(postID)
+        await setQuery.set({authorId: theirId, visibility: "private"})
+        const testQuery = getFirestore(myAuth).collection("posts").doc(postID)
+        await firebase.assertFails(testQuery.get())
     })
 })
