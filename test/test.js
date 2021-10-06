@@ -1,7 +1,10 @@
 const assert = require('assert')
 const firebase = require('@firebase/testing')
+require('dotenv').config()
 
 const MY_PROJECT_ID = 'mogutsou'
+const EMULATE_HOST = "localhost:8081"
+
 const myId = "user_abc"
 const theirId = "user_xyz"
 const myAuth = {uid: myId, email: 'abc@example.com'}
@@ -23,7 +26,7 @@ function getAdminFirebase(auth) {
 function getFirestore(auth, admin = false) {
     const db = (admin ? getAdminFirebase(auth) : getFirebase(auth)).firestore()
     db.settings({
-        host: "localhost:8081",
+        host: EMULATE_HOST,
         ssl: false
     });
     return db;
@@ -85,4 +88,9 @@ describe("Our social app", () => {
         const testQuery = getFirestore(myAuth).collection("posts").doc(postID)
         await firebase.assertFails(testQuery.get())
     })
+})
+
+// eslint-disable-next-line no-undef
+after (async () => {
+    await firebase.clearFirestoreData({ projectId: MY_PROJECT_ID })
 })
