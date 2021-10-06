@@ -32,6 +32,10 @@ function getFirestore(auth, admin = false) {
     return db;
 }
 
+beforeEach (async () => {
+    await firebase.clearFirestoreData({ projectId: MY_PROJECT_ID })
+})
+
 describe("Our social app", () => {
     it("Understands basic addtion", () => {
         assert.equal(2 + 2, 4)
