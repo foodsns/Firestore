@@ -47,4 +47,24 @@ describe("Our social app", () => {
         const testDoc = getFirestore(myAuth).collection("users").doc("user_xyz")
         await firebase.assertFails(testDoc.set({foo: "bar"}))
     })
+
+    it ("Can read posts marked public", async () => {
+        const testQuery = getFirestore().collection("posts").where("visibility", "==", "public");
+        await firebase.assertSucceeds(testQuery.get());
+    })
+
+    it ("Can query personal posts", async () => {
+        const testQuery = getFirestore(myAuth).collection("posts").where("authorId", "==", myId)
+        await firebase.assertSucceeds(testQuery.get())
+    })
+
+    it ("Can't query all posts", async () => {
+        const testQuery = getFirestore(myAuth).collection("posts");
+        await firebase.assertFails(testQuery.get())
+    })
+
+    it ("Can read a single public post", async () => {
+        const testQuery = getFirestore().collection("posts").doc("public_post")
+        await firebase.assertSucceeds(testQuery.get())
+    })
 })
