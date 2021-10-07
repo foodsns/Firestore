@@ -155,6 +155,31 @@ describe("Test posts collection", () => {
             }))
     })
 
+    it("Can't make new content with weird data value", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        myAuth.uid = theirId
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_stu").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2storiasdfasdfadfadfasfsaes2stories2stories2stories2stories2stories2stories2stories2',
+                img: 'asdfasdf',
+                lat: 37.568178,
+                lot: 126.971474,
+                good: 0,
+                visibility: "private",
+                authorId: theirId,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
+    })
+
     it("Can't edit content who not logged in", async () => {
         await firebase.assertFails(getFirestore().collection("posts").doc("post_jkl").set(
             {
