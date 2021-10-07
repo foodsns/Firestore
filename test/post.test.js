@@ -224,6 +224,37 @@ describe("Test posts collection", () => {
             }))
     })
 
+    it("Can't edit my content's good count", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        myAuth.uid = theirId
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_jkl").update(
+            {
+                good: 100
+            }))
+    })
+
+    it("Other user can edit my content's good count", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        const ref = getFirestore(myAuth).collection("posts").doc("post_jkl")
+        await firebase.assertSucceeds(
+            ref
+            .firestore.runTransaction(async (transaction) => {
+                const data = await (await ref.get()).data()
+                transaction.update(ref, {good: data.good + 1})
+            }))
+    })
+
+    it("Other user can edit my content's good count2", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        const ref = getFirestore(myAuth).collection("posts").doc("post_jkl")
+        await firebase.assertSucceeds(
+            ref
+            .firestore.runTransaction(async (transaction) => {
+                const data = await (await ref.get()).data()
+                transaction.update(ref, {good: data.good + 1})
+            }))
+    })
+
     it("Can't write with unsupported key", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
         await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_pqr").set(
