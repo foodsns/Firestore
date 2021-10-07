@@ -160,8 +160,18 @@ service cloud.firestore {
                         && resource.data.authorId == request.auth.uid);
     }
     match /posts/{postId}/goods/{userId} {
+      function fullValidateDataType (docData) {
+        return 
+                docData.authorId is string &&
+                docData.setTime is timestamp;
+      }
+      function fullValidateDataValue(docData) {
+        return request.auth.uid == docData.authorId
+      }
       allow write: if (request.auth != null 
                       && request.auth.uid == userId
+                      && fullValidateDataType(request.resource.data)
+                      && fullValidateDataValue(request.resource.data)
                       && get(/databases/$(database)/documents/posts/$(postId)).data.authorId != userId)
     }
 
