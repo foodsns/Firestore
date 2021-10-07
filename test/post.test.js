@@ -141,10 +141,10 @@ describe("Test posts collection", () => {
                 date: '2021년 9월 4일',
                 profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                 writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
-                good: 8,
                 img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
                 lat: 37.568178,
                 lot: 126.971474,
+                good: 0,
                 visibility: "private",
                 authorId: theirId,
                 country: 'Korea', 
@@ -204,20 +204,18 @@ describe("Test posts collection", () => {
 
     it("Can edit my content", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_ghi").set(
+        myAuth.uid = theirId
+        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_jkl").update(
             {
-                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
                 title: '구 러시아공사관',
                 descript: '구 러시아공사관',
                 date: '2021년 9월 4일',
                 profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                 writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
-                good: 8,
                 img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
                 lat: 37.568178,
                 lot: 126.971474,
                 visibility: "public",
-                authorId: myAuth.uid,
                 country: 'Korea', 
                 city: '서울특별시',
                 state: '중구',

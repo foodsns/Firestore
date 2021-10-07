@@ -19,18 +19,103 @@ service cloud.firestore {
     }
 
     match /posts/{postId} {
-
       function supportKeys() {
         return request.resource.data.keys().hasAll(
-          ['id', 'country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'good', 'img', 'visibility', 'authorId']) 
+          ['country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'img', 'visibility']) 
         && request.resource.data.keys().hasOnly(
         ['id', 'country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'good', 'img', 'visibility', 'authorId']);
       }
+      function disaffectKeys() {
+        return request.auth.uid == resource.data.authorId
+        // 글쓴이 자기 자신이 건들 수 없는 키
+                ? !request.resource.data.diff(resource.data).affectedKeys().hasAny(['id', 'authorId', 'good'])
+        // 제 3자가 건들 수 없는 키
+                : !request.resource.data.diff(resource.data).affectedKeys().hasAny(
+                  ['id', 'country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'img', 'visibility', 'authorId'])
+      }
+      function fullValidateDataType (docData) {
+        return docData.id is string &&
+                docData.country is string &&
+                docData.city is string &&
+                docData.state is string &&
+                docData.street is string &&
+                docData.lat is float &&
+                docData.lot is float &&
+                docData.title is string &&
+                docData.hashtag is string &&
+                docData.descript is string &&
+                docData.date is string &&
+                docData.profileImg is string &&
+                docData.writer is string &&
+                docData.get('good', 0) is int &&
+                docData.img is string &&
+                docData.visibility is string &&
+                docData.authorId is string;
+      }
+      function meValidateDataType(docData) {
+        return 
+                docData.country is string &&
+                docData.city is string &&
+                docData.state is string &&
+                docData.street is string &&
+                docData.lat is float &&
+                docData.lot is float &&
+                docData.title is string &&
+                docData.hashtag is string &&
+                docData.descript is string &&
+                docData.date is string &&
+                docData.profileImg is string &&
+                docData.writer is string &&
+                docData.good is int &&
+                docData.img is string &&
+                docData.visibility is string;
+      }
+      function validateDataType(docData, mode) {
+        return {
+          "full": fullValidateDataType(docData),
+          "me": meValidateDataType(docData),
+          "other": (docData.good is int)
+        } [mode]
+      }
+      function validateDataValue(docData) {
+        // docData.good = docData.good == null ? 0 : docData.good;
+        return docData.id.size() >= 20 && docData.id.size() < 40
+        // https://www.google.com/search?q=country+name+length&newwindow=1&rlz=1C5CHFA_enKR936KR936&sxsrf=AOaemvLEsnSgljNsZH0LJFVRXiDk_oOsgQ%3A1633602724479&ei=pMxeYZnJHLTfmAWzrIIY&ved=0ahUKEwiZq-KwjLjzAhW0L6YKHTOWAAMQ4dUDCA4&uact=5&oq=country+name+length&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEMsBMgYIABAFEB4yBggAEAUQHjIGCAAQBRAeOgkIABCwAxAIEB46BggAEAgQHjoECCMQJzoKCAAQgAQQhwIQFDoFCAAQgAQ6BwgAEAoQywE6BAgAEB5KBAhBGAFQ6XxY3oYBYLiIAWgDcAB4AIAB2gGIAewIkgEFMC44LjGYAQCgAQHIAQXAAQE&sclient=gws-wiz
+                && docData.country.size() >= 4 && docData.country.size() < 60
+                && docData.city.size() >= 2 && docData.city.size() < 100
+                && docData.state.size() >= 2 && docData.state.size() < 100
+                && docData.street.size() >= 2 && docData.street.size() < 100
+                // https://stackoverflow.com/a/23914607/7270469
+                && docData.lat >= -90 && docData.lat <= 90
+                && docData.lot >= -180 && docData.lot <= 180
+                && docData.title.size() >= 2 && docData.title.size() < 200
+                && docData.hashtag.size() >= 2 && docData.hashtag.size() < 50
+                && docData.descript.size() >= 2 && docData.descript.size() < 200
+                && docData.date.size() >= 2 && docData.date.size() < 100
+                && docData.profileImg.size() < 1000
+                && docData.profileImg.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
+                && docData.writer.size() < 500
+                && docData.good >= 0
+                // && (docData.good == null || docData.good >= 0)
+                && docData.img.size() < 1000
+                && docData.img.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
+                && docData.visibility.matches("(public)|(private)")
+                && request.auth.uid == docData.authorId
+      }
       allow read: if (resource.data.visibility != null && resource.data.visibility == "public") || (request.auth != null && resource.data.authorId == request.auth.uid);
       // allow write: if (request.auth != null && (resource.data.authorId == null || resource.data.authorId == requiest.auth.uid));
-      allow create: if (request.auth != null && request.resource.data.authorId != null && request.resource.data.authorId == request.auth.uid && supportKeys());
-      allow update, delete: if (request.auth != null && request.resource.data.authorId == request.auth.uid && resource.data.authorId == request.auth.uid && supportKeys());
-
+      allow create: if (request.auth != null
+                        && request.resource.data.good == 0
+                        && supportKeys() 
+                        && validateDataType(request.resource.data, "full")
+                        && validateDataValue(request.resource.data));
+      allow update: if (request.auth != null 
+                        && supportKeys() 
+                        && disaffectKeys() 
+                        && validateDataType(request.resource.data, resource.data.authorId == request.auth.uid ? "me" : "other"));
+      allow delete: if (request.auth != null 
+                        && request.resource.data.authorId == request.auth.uid 
+                        && resource.data.authorId == request.auth.uid);
     }
   }
 }
