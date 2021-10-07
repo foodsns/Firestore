@@ -131,7 +131,6 @@ service cloud.firestore {
                         && disaffectKeys() 
                         && validateDataTypeAndValue(request.resource.data, resource.data.authorId == request.auth.uid ? "me" : "other"));
       allow delete: if (request.auth != null 
-                        && request.resource.data.authorId == request.auth.uid 
                         && resource.data.authorId == request.auth.uid);
     }
   }

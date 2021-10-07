@@ -280,6 +280,21 @@ describe("Test posts collection", () => {
             }))
     })
 
+    it("Can delete my post", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_ghi").delete())
+    })
+
+    it("Can't delete other's post", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_def").delete())
+    })
+
+    it("Can't delete post by anonymous user", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_abc").delete())
+    })
+
     it("Can't write with unsupported key", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
         await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_pqr").set(
