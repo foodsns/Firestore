@@ -180,7 +180,7 @@ describe("Test posts collection", () => {
 
     it("Can't edit other content", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_jkl").set(
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_jkl").update(
             {
                 id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
                 title: '구 러시아공사관',
