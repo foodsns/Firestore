@@ -46,6 +46,7 @@ describe("Test users collection", () => {
                 displayName: 'USER_A',
                 email: 'USER_A@example.com',
                 emailVerified: false,
+                phoneNumber: '010-0000-0000',
                 photoURL: 'https://avatars.githubusercontent.com/u/90189814?s=200&v=4',
                 lastLogin: firebase.firestore.FieldValue.serverTimestamp()
             }))
