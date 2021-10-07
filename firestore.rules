@@ -21,7 +21,9 @@ service cloud.firestore {
     match /posts/{postId} {
 
       function supportKeys() {
-        return request.resource.data.keys().hasOnly(
+        return request.resource.data.keys().hasAll(
+          ['id', 'country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'good', 'img', 'visibility', 'authorId']) 
+        && request.resource.data.keys().hasOnly(
         ['id', 'country', 'city', 'state', 'street', 'lat', 'lot', 'title', 'hashtag', 'descript', 'date', 'profileImg', 'writer', 'good', 'img', 'visibility', 'authorId']);
       }
       allow read: if (resource.data.visibility != null && resource.data.visibility == "public") || (request.auth != null && resource.data.authorId == request.auth.uid);

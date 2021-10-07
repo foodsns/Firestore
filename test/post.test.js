@@ -84,36 +84,170 @@ describe("Test posts collection", () => {
     })
 
     it("Can't make new content who not logged in", async () => {
-        await firebase.assertFails(getFirestore().collection("posts").doc("post_jkl").set({visibility: "private"}))
+        await firebase.assertFails(getFirestore().collection("posts").doc("post_jkl").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "private",
+                authorId: null,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
     it("Can't make new content with authorId != myId", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_mno").set({authorId: theirId, visibility: "private"}))
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_mno").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "private",
+                authorId: theirId,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
     it("Can make new content who logged in", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
         myAuth.uid = theirId
-        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_jkl").set({authorId: theirId, visibility: "private"}))
+        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_jkl").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "private",
+                authorId: theirId,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
     it("Can't edit content who not logged in", async () => {
-        await firebase.assertFails(getFirestore().collection("posts").doc("post_jkl").set({hello: "hi"}))
+        await firebase.assertFails(getFirestore().collection("posts").doc("post_jkl").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "private",
+                authorId: theirId,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
     it("Can't edit other content", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_jkl").set({authorId: myAuth.uid, visibility: "private", country: "seoul"}))
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_jkl").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "private",
+                authorId: myAuth.uid,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
     it("Can edit my content", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_ghi").set({authorId: myAuth.uid, visibility: "public", country: "seoul"}))
+        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_ghi").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "public",
+                authorId: myAuth.uid,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
     })
 
-    it("Can't write unsupported key", async () => {
+    it("Can't write with unsupported key", async () => {
         const myAuth = {uid: myId, email: 'abc@example.com'}
-        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_pqr").set({authorId: myAuth.uid, hello: "adsf", hi: "asdf"}))
+        await firebase.assertFails(getFirestore(myAuth).collection("posts").doc("post_pqr").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 8,
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                visibility: "public",
+                authorId: myAuth.uid,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관',
+                hello: "adsf"
+            }))
     })
 })
