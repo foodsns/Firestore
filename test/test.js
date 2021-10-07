@@ -63,34 +63,34 @@ describe("Our social app", () => {
         await firebase.assertFails(testDoc.set({foo: "bar"}))
     })
 
-    it ("Can read posts marked public", async () => {
-        const testQuery = getFirestore().collection("posts").where("visibility", "==", "public");
+    it ("Can read pages marked public", async () => {
+        const testQuery = getFirestore().collection("pages").where("visibility", "==", "public");
         await firebase.assertSucceeds(testQuery.get());
     })
 
-    it ("Can query personal posts", async () => {
-        const testQuery = getFirestore(myAuth).collection("posts").where("authorId", "==", myId)
+    it ("Can query personal pages", async () => {
+        const testQuery = getFirestore(myAuth).collection("pages").where("authorId", "==", myId)
         await firebase.assertSucceeds(testQuery.get())
     })
 
-    it ("Can't query all posts", async () => {
-        const testQuery = getFirestore(myAuth).collection("posts");
+    it ("Can't query all pages", async () => {
+        const testQuery = getFirestore(myAuth).collection("pages");
         await firebase.assertFails(testQuery.get())
     })
 
     it ("Can read a single public post", async () => {
         const postID = "public_post"
-        const setQuery = getFirestore(null, true).collection("posts").doc(postID)
+        const setQuery = getFirestore(null, true).collection("pages").doc(postID)
         await setQuery.set({authorId: theirId, visibility: "public"})
-        const testQuery = getFirestore().collection("posts").doc(postID)
+        const testQuery = getFirestore().collection("pages").doc(postID)
         await firebase.assertSucceeds(testQuery.get())
     })
 
     it ("Can't read a single private post", async () => {
         const postID = "private_post"
-        const setQuery = getFirestore(null, true).collection("posts").doc(postID)
+        const setQuery = getFirestore(null, true).collection("pages").doc(postID)
         await setQuery.set({authorId: theirId, visibility: "private"})
-        const testQuery = getFirestore(myAuth).collection("posts").doc(postID)
+        const testQuery = getFirestore(myAuth).collection("pages").doc(postID)
         await firebase.assertFails(testQuery.get())
     })
 })
