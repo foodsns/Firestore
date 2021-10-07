@@ -11,7 +11,22 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow write: if (request.auth.uid == userId);
+      function supportKeys() {
+        return request.resource.data.keys().hasAll(
+          ['displayName', 'email', 'emailVerified', 'photoURL', 'lastLogin']) 
+        && request.resource.data.keys().hasOnly(
+        ['displayName', 'email', 'emailVerified', 'phoneNumber', 'photoURL', 'lastLogin']);
+      }
+      function validateDataType (docData) {
+        return docData.displayName is string &&
+                docData.email is string &&
+                docData.emailVerified is bool &&
+                docData.get('phoneNumber', "") is string &&
+                docData.photoURL is string &&
+                docData.lastLogin is timestamp;
+      }
+      allow read: if (request.auth.uid == userId);
+      allow write: if (request.auth.uid == userId && supportKeys() && validateDataType(request.resource.data));
     }
 
     match /pages/{postId} {
