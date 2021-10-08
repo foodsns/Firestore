@@ -4,7 +4,8 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "test": "mocha --exit -r dotenv/config spec ./*.test.js --sort true",
+    "test": "mocha --exit -r dotenv/config spec ./*.test.js --sort true --timeout 0",
+    "test:ram": "node --max-old-space-size=4096 ./node_modules/mocha/bin/mocha --exit -r dotenv/config spec ./*.test.js --sort true --timeout 0",
     "test:watch": "nodemon --exec \"npm test\""
   },
   "author": "",

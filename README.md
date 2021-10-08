@@ -54,6 +54,17 @@ const [checkGoodMarkedAndPublicOtherPostList, checkGoodMarkedMyPostList] = await
         ])
 ```
 
+- Performance test
+
+Each 8 posts have 1000 likes.
+
+```
+Test goods collection with complex query
+    ✔ Should checked good mark which is already checked by me (410ms)
+    ✔ Should checked good mark which is already checked by me [Performance test (Data gen)] (106592ms)
+    ✔ Should checked good mark which is already checked by me [Performance test (Query)] (227ms)
+```
+
 ### Example Insert
 
 ```
