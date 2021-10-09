@@ -1,4 +1,5 @@
 var admin = require("firebase-admin");
+const firebase = require('@firebase/testing')
 
 var serviceAccount = require("./service-account.json");
 
@@ -180,7 +181,7 @@ function getRandomColorName() {
     return colorList[getRandomIntInclusive(1, colorList.length - 1) - 1]
 }
 
-function insertDummy () {
+function insertDummyPost () {
     const id = randomString(20)
     const lat = getRandomArbitrary(33, 43)
     const lot = getRandomArbitrary(124, 132)
@@ -206,7 +207,20 @@ function insertDummy () {
         })
 }
 
-Promise.all(new Array(10000).fill(undefined).map(() => insertDummy()))
+function insertDummyGoods(postId) {
+    const id = randomString(20)
+    return admin.firestore().collection("posts").doc(postId).collection("goods").add({
+        authorId: id,
+        setTime: admin.firestore.Timestamp.now()
+    })
+}
+
+function createDummyPostAndGoodsLog(size) {
+    return insertDummyPost()
+    .then(result => Promise.all(new Array(size).fill(undefined).map(() => insertDummyGoods(result.id))))
+}
+const size = 10
+Promise.all(new Array(size).fill(undefined).map(() => createDummyPostAndGoodsLog(size)))
 .then(result => {
     console.log(result)
 })
