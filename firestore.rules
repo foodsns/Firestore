@@ -70,7 +70,7 @@ service cloud.firestore {
                 docData.title is string &&
                 docData.hashtag is string &&
                 docData.descript is string &&
-                docData.date is string &&
+                docData.date is timestamp &&
                 docData.profileImg is string &&
                 docData.writer is string &&
                 docData.get('good', 0) is int &&
@@ -89,7 +89,7 @@ service cloud.firestore {
                 docData.title is string &&
                 docData.hashtag is string &&
                 docData.descript is string &&
-                docData.date is string &&
+                docData.date is timestamp &&
                 docData.profileImg is string &&
                 docData.writer is string &&
                 docData.img is string &&
@@ -108,7 +108,7 @@ service cloud.firestore {
                 && docData.title.size() >= 2 && docData.title.size() < 200
                 && docData.hashtag.size() >= 2 && docData.hashtag.size() < 50
                 && docData.descript.size() >= 2 && docData.descript.size() < 200
-                && docData.date.size() >= 2 && docData.date.size() < 100
+                // && docData.date.size() >= 2 && docData.date.size() < 100
                 && docData.profileImg.size() < 1000
                 && docData.profileImg.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
                 && docData.writer.size() < 500
@@ -132,7 +132,7 @@ service cloud.firestore {
                 && docData.title.size() >= 2 && docData.title.size() < 200
                 && docData.hashtag.size() >= 2 && docData.hashtag.size() < 50
                 && docData.descript.size() >= 2 && docData.descript.size() < 200
-                && docData.date.size() >= 2 && docData.date.size() < 100
+                // && docData.date.size() >= 2 && docData.date.size() < 100
                 && docData.profileImg.size() < 1000
                 && docData.profileImg.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
                 && docData.writer.size() < 500

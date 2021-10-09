@@ -190,7 +190,7 @@ function insertDummyPost () {
             id: `dummy_${id}`,
             title: 'dummy',
             descript: `${Number(lat).toFixed(3)}, ${Number(lot).toFixed(3)}`,
-            date: '2021년 9월 4일',
+            date: admin.firestore.Timestamp.now(),
             profileImg: 'https://picsum.photos/64/64',
             writer: `${id}`,
             good: getRandomIntInclusive(0, 1000000),

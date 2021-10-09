@@ -18,7 +18,7 @@
 |id|O|`string`|20 <= length < 40|유니크 ID 값, Ex) `GUID`|
 |title|O|`string`|2 <= length < 200|게시물 제목|
 |descript|O|`string`|2 <= length < 200|게시물 내용|
-|date|O|`string`|2 <= length < 100|게시물 작성 일 `<추후 변동 가능성 있음>`|
+|date|O|`timestamp`|`firebase.firestore.FieldValue.serverTimestamp()`|게시물 작성 일|
 |profileImg|O|`string`|length < 1000, http, https url 주소|작성자 프로필 이미지 주소|
 |writer|O|`string`|length < 500|작성자 이름|
 |good|O|`int`|초깃값 0 할당해야 함|좋아요 수 `<좋아요 클릭마다 트렌젝션 필요>`|
@@ -72,7 +72,7 @@ Test goods collection with complex query
     id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
     title: '구 러시아공사관',
     descript: '구 러시아공사관',
-    date: '2021년 9월 4일',
+    date: firebase.firestore.FieldValue.serverTimestamp(),
     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
     good: 8,
@@ -95,7 +95,7 @@ Test goods collection with complex query
 {
     title: '구 러시아공사관',
     descript: '구 러시아공사관',
-    date: '2021년 9월 4일',
+    date: firebase.firestore.FieldValue.serverTimestamp(),
     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
