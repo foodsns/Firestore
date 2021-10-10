@@ -219,8 +219,9 @@ function createDummyPostAndGoodsLog(size) {
     return insertDummyPost()
     .then(result => Promise.all(new Array(size).fill(undefined).map(() => insertDummyGoods(result.id))))
 }
-const size = 10
-Promise.all(new Array(size).fill(undefined).map(() => createDummyPostAndGoodsLog(size)))
+const postLen = 5000
+const goodsLen = 1
+Promise.all(new Array(postLen).fill(undefined).map(() => createDummyPostAndGoodsLog(goodsLen)))
 .then(result => {
     console.log(result)
 })
