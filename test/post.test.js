@@ -276,7 +276,25 @@ describe("Test posts collection", () => {
             ref
             .firestore.runTransaction(async (transaction) => {
                 const data = await (await ref.get()).data()
+                const goodLogRef = ref.collection("goods").doc(myAuth.uid)
                 transaction.update(ref, {good: data.good + 1})
+                transaction.set(goodLogRef, {
+                    authorId: myAuth.uid,
+                    setTime: firebase.firestore.FieldValue.serverTimestamp()
+                })
+            }))
+    })
+
+    it("Other user can decrease my content's good count", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        const ref = getFirestore(myAuth).collection("posts").doc("post_jkl")
+        await firebase.assertSucceeds(
+            ref
+            .firestore.runTransaction(async (transaction) => {
+                const data = await (await ref.get()).data()
+                const goodLogRef = ref.collection("goods").doc(myAuth.uid)
+                transaction.update(ref, {good: data.good - 1})
+                transaction.delete(goodLogRef)
             }))
     })
 
