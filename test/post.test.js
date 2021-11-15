@@ -39,6 +39,31 @@ before (async () => {
 })
 
 describe("Test posts collection", () => {
+    it("regular expression", async () => {
+        const myAuth = {uid: myId, email: 'abc@example.com'}
+        myAuth.uid = theirId
+        await firebase.assertSucceeds(getFirestore(myAuth).collection("posts").doc("post_jkl").set(
+            {
+                id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
+                title: '구 러시아공사관',
+                descript: '구 러시아공사관 #맛집 여기 맛있어요~! 다음에 또 오고 싶네요^^ 01245',
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                lat: 37.568178,
+                lot: 126.971474,
+                good: 0,
+                visibility: "private",
+                authorId: theirId,
+                country: 'Korea', 
+                city: '서울특별시',
+                state: '중구',
+                street: '정동',
+                hashtag: '러시아공사관'
+            }))
+    })
+
     it("Can read only visible content", async () => {
         const postID = "post_abc"
         const setQuery = getFirestore(null, true).collection("posts").doc(postID)
