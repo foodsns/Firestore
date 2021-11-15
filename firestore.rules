@@ -108,6 +108,9 @@ service cloud.firestore {
                 && docData.title.size() >= 2 && docData.title.size() < 200
                 && docData.hashtag.size() >= 2 && docData.hashtag.size() < 50
                 && docData.descript.size() >= 2 && docData.descript.size() < 200
+                && docData.descript.matches("^[\\p{L}\\t\\n\\r\\s\\w\\#,.><~!?@#$%^&*()-=+|]*$")
+                // /^[\p{L}\t\n\r\s\\#,.><~!?@#$%^&*()-=+|]{2,200}$/u
+                //&& docData.email.matches("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")
                 // && docData.date.size() >= 2 && docData.date.size() < 100
                 && docData.profileImg.size() < 1000
                 && docData.profileImg.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
@@ -132,6 +135,7 @@ service cloud.firestore {
                 && docData.title.size() >= 2 && docData.title.size() < 200
                 && docData.hashtag.size() >= 2 && docData.hashtag.size() < 50
                 && docData.descript.size() >= 2 && docData.descript.size() < 200
+                && docData.descript.matches("^[\\p{L}\\t\\n\\r\\s\\w\\#,.><~!?@#$%^&*()-=+|]*$")
                 // && docData.date.size() >= 2 && docData.date.size() < 100
                 && docData.profileImg.size() < 1000
                 && docData.profileImg.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")
